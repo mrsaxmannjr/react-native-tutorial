@@ -1,14 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const styles = StyleSheet.create({
   label: { color: '#FFF' },
-  tip: {
+  tipStyle: {
     color: '#FFF',
     fontSize: 60,
     fontWeight: 'bold'
   },
-  total: {
+  totalStyle: {
     color: '#FFF',
     fontSize: 30,
     fontWeight: 'bold'
@@ -33,22 +34,31 @@ const Values = ({
     total = (Math.round(total * 100) / 100).toFixed(2);
   }
 
+  const {
+    label, tipStyle, totalStyle, values
+  } = styles;
+
   return (
-    <View style={ styles.values }>
-      <Text style={ styles.label }>
+    <View style={ values }>
+      <Text style={ label }>
         Tip Amount
       </Text>
-      <Text style={ styles.tip }>
+      <Text style={ tipStyle }>
         { `$${tip}` }
       </Text>
-      <Text style={ styles.label }>
+      <Text style={ label }>
         Total Bill
       </Text>
-      <Text style={ styles.total }>
+      <Text style={ totalStyle }>
         { `$${total}` }
       </Text>
     </View>
   );
+};
+
+Values.propTypes = {
+  bill: PropTypes.string.isRequired,
+  tipPercent: PropTypes.number.isRequired
 };
 
 export default Values;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { AppLoading, Font } from 'expo';
 import { Button, StyleSheet, TextInput, View } from 'react-native';
 import { Container, Content } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
 
 import Head from './ui/Head';
 import Values from './ui/Values';
@@ -50,8 +49,7 @@ class App extends Component {
   async componentDidMount() {
     await Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-      ...Ionicons.font
+      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
     });
 
     this.setState({ isReady: true });

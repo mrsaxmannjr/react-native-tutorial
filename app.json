@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tipcalc",
+    "name": "Tip Calc",
     "slug": "tipcalc",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -22,7 +22,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.mrsaxmannjr.tipcalc"
+    },
     "ios": {
+      "bundleIdentifier": "com.mrsaxmannjr.tipcalc",
       "supportsTablet": true
     }
   }
