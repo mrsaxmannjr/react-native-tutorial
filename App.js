@@ -1,32 +1,39 @@
 import React, { Component } from 'react';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AppLoading, Font } from 'expo';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
 import { Container, Content } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 
 import Head from './ui/Head';
-// import Hello from './Hello';
+import Values from './ui/Values';
 
 const styles = StyleSheet.create({
-  buttonGroup: { flexDirection: 'row' },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   container: {
     alignItems: 'center',
-    backgroundColor: '#fff',
-    flex: 1
+    backgroundColor: '#000',
+    flex: 1,
+    height: '100%',
+    width: '100%'
   },
   customTip: {
-    borderWidth: 1,
-    borderColor: '#333',
-    height: 30,
+    color: '#FFF',
+    height: 40,
     padding: 5,
     width: 60
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#333',
+    color: '#FFF',
     height: 40,
     padding: 5,
     width: '100%'
+  },
+  inputs: {
+    backgroundColor: '#212121',
+    padding: 20
   }
 });
 
@@ -34,7 +41,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue: '',
+      bill: '',
       isReady: false,
       tipPercent: 0.2
     };
@@ -50,30 +57,7 @@ class App extends Component {
     this.setState({ isReady: true });
   }
 
-  alert = () => {
-    Alert.alert(
-      'ALERT MOFOOOOO',
-      'This is the alert message MOFOOOO',
-      [{
-        text: 'OK Mofo',
-        onPress: () => console.log('hit ok')
-      },
-      {
-        text: 'Cancel Mofo',
-        onPress: () => console.log('hit cancel'),
-        style: 'cancel'
-      }]
-    );
-  }
-
   updateCustomTip = (customTipPercent) => {
-    // if (Platform.OS === 'android') {
-
-    // }
-    // if (Platform.OS === 'ios') {
-
-    // }
-
     if (customTipPercent) {
       this.setState({ tipPercent: parseFloat(customTipPercent) / 100 });
     } else {
@@ -81,24 +65,18 @@ class App extends Component {
     }
   }
 
-  updateInputValue = text => this.setState({ inputValue: text })
+  updateBill = amount => this.setState({ bill: amount })
 
   updateTipPercent = percent => this.setState({ tipPercent: percent })
 
   render() {
     const {
-      inputValue, isReady, tipPercent
+      bill, isReady, tipPercent
     } = this.state;
 
     const {
-      buttonGroup, container, customTip, input
+      buttonGroup, container, customTip, input, inputs
     } = styles;
-
-    let tip = 0.00;
-    if (inputValue) {
-      tip = parseFloat(inputValue) * tipPercent;
-      tip = (Math.round(tip * 100) / 100).toFixed(2);
-    }
 
     if (!isReady) {
       return <AppLoading />;
@@ -107,47 +85,50 @@ class App extends Component {
     return (
       <Container>
         <Head />
-        <Content padder>
-          <View style={container}>
-            <Button
-              onPress={this.alert}
-              title="Alert"
+        <View style={ container }>
+          <Content style={ { width: '100%' } }>
+            <Values
+              bill={ bill }
+              tipPercent={ tipPercent }
             />
-            <Text>
-              {`$${tip}`}
-            </Text>
-            <TextInput
-              keyboardType="numeric"
-              onChangeText={text => this.updateInputValue(text)}
-              placeholder="0.00"
-              style={input}
-              value={inputValue}
-            />
-            <View style={buttonGroup}>
-              <Button
-                onPress={() => this.updateTipPercent(0.1)}
-                title="10%"
-              />
-              <Button
-                onPress={() => this.updateTipPercent(0.2)}
-                title="20%"
-              />
-              <Button
-                onPress={() => this.updateTipPercent(0.25)}
-                title="25%"
-              />
+            <View style={ inputs }>
               <TextInput
                 keyboardType="numeric"
-                onChangeText={
-                  customTipPercent => this.updateCustomTip(customTipPercent)
-                }
-                placeholder="20%"
-                style={customTip}
-                value={(tipPercent * 100).toString()}
+                onChangeText={ amount => this.updateBill(amount) }
+                placeholder="0.00"
+                placeholderTextColor="#FFF"
+                style={ input }
+                underlineColorAndroid="#FFF"
+                value={ bill }
               />
+              <View style={ buttonGroup }>
+                <Button
+                  onPress={ () => this.updateTipPercent(0.1) }
+                  title="10%"
+                />
+                <Button
+                  onPress={ () => this.updateTipPercent(0.2) }
+                  title="20%"
+                />
+                <Button
+                  onPress={ () => this.updateTipPercent(0.25) }
+                  title="25%"
+                />
+                <TextInput
+                  keyboardType="numeric"
+                  onChangeText={
+                    customTipPercent => this.updateCustomTip(customTipPercent)
+                  }
+                  placeholder="20%"
+                  placeholderTextColor="#FFF"
+                  style={ customTip }
+                  underlineColorAndroid="#FFF"
+                  value={ (tipPercent * 100).toString() }
+                />
+              </View>
             </View>
-          </View>
-        </Content>
+          </Content>
+        </View>
       </Container>
     );
   }
